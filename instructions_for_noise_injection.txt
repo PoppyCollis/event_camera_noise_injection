@@ -1,0 +1,33 @@
+INSTRUCTIONS FOR INJECTING NOISE INTO DATASET VIDEOS
+
+GoogleSheets:
+https://docs.google.com/spreadsheets/d/1y52cJEPmonaaT4vr6QqdaC3b-Pwl7Rar76JvPLBSm5A/edit?usp=sharing
+
+(see google sheets for details of vicon_usec_offsets and n_offset etc. for each dataset catagory)
+
+1. open get_noise_events file
+set the file name to your noise.txt file
+change the variable sample_rate to downsample the noise file (have previously used 10, 3 and 1 as three noise intensity levels)
+this will create the file 'noise_event_{test_name}_{test_number:04}.h5' in './data/'
+run get_noise_events.py
+
+2. if you need to record the dv events first, run projection.py with record set to True, and set the record_seconds, test_number and test_name - this should collect dv_events and produce the required files...
+
+alternatively if you are injecting noise into an existing video recording just make sure you have these files in './data/':
+	dv_event_{test_name}_{test_number:04}.h5
+	dv_frame_{test_name}_{test_number:04}.h5'
+	vicon_{test_name}_{test_number:04}.h5'
+	labelled_{test_name}_{test_number:04}.h5'
+	noise_event_{test_name}_{test_number:04}.h5' #this last file should be from what was collected by get_noise_events.py
+
+3. open noise_injection.py 
+edit test_number and test_name
+set n_offset (see google sheets file for existing video files and offsets or calculate by: print out first iteration of dv_events and of noise_events by running file with n_offset set to 0 and exit(0) uncommented - subtract first noise timestamp from first dv timestamp and set this as n_offset)
+run noise_injection.py 
+
+4. open projection.py 
+set record to False
+edit record_seconds, test_number and test_name
+make sure that f_dv_event_name = f'./data/combo_event.h5' and comment out f_dv_event_name = f'./data/dv_event_{test_name}_{test_number:04}.h5'
+set vicon_usec_offset to relevant value found in the google sheets file
+run projection.py
