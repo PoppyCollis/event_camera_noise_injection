@@ -1,7 +1,7 @@
 # event_camera_noise_injection
 Augmentation of event-based data using noise injection
 
-The aim of this project is to provide a method by which noise can be injected into a DV event camera dataset for image segmentation with the purpose of improving the robustness of the network's ability to generalize through domain randomization.
+The aim of this project is to provide a method by which noise can be injected into a DV event camera dataset for image segmentation with the purpose of performing domain randomization to improve the robustness of a network's ability to generalize from training data.
 
 The process involves:
 1. Converting noise texture videos to events. 
