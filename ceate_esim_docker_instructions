@@ -1,6 +1,8 @@
 
 PROCESS OF INSTALLING AND RUNNING ESIM
 
+How to create a docker image of ESIM (interest only as this process not needed as image can be pulled from docker hub - see https://hub.docker.com/repository/docker/pcoll98/video_to_events_1)
+
 #create docker image of ROS kinetic: follow https://varhowto.com/install-ros-noetic-docker/
 
 sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
