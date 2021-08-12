@@ -1,0 +1,132 @@
+
+PROCESS OF INSTALLING AND RUNNING ESIM
+
+#create docker image of ROS kinetic: follow https://varhowto.com/install-ros-noetic-docker/
+
+sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt install docker-ce docker-ce-cli containerd.io
+sudo docker -v
+docker pull osrf/ros:kinetic-desktop-full
+sudo docker image ls
+sudo docker run -it ros:kinetic
+
+#source the setup bash file
+source /opt/ros/kinetic/setup.bash
+cd
+
+#set up your sim folders
+mkdir -p ~/sim_ws/src
+cd ~/sim_ws
+
+#install catkin: follow https://catkin-tools.readthedocs.io/en/latest/installing.html
+sudo apt install ros-kinetic-catkin
+sudo apt update
+sudo apt install wget
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
+wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install python-catkin-tools
+
+#configure catkin
+cd ~/sim_ws
+catkin init
+catkin config --extend /opt/ros/kinetic --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+#clone repo
+cd src/
+git clone https://github.com/uzh-rpg/rpg_esim.git
+git clone https://github.com/catkin/catkin_simple
+git clone https://github.com/uzh-rpg/ze_oss
+git clone https://github.com/ethz-asl/gflags_catkin
+git clone https://github.com/ethz-asl/glog_catkin
+git clone https://github.com/ethz-asl/eigen_catkin
+git clone https://github.com/ethz-asl/eigen_checks
+git clone https://github.com/ethz-asl/minkindr
+git clone https://github.com/ethz-asl/minkindr_ros
+git clone https://github.com/ethz-asl/yaml_cpp_catkin
+git clone https://github.com/uzh-rpg/rpg_dvs_ros
+git clone https://github.com/uzh-rpg/assimp_catkin
+
+#install other stuff
+sudo apt-get install ros-kinetic-pcl-ros
+sudo apt-get install libproj-dev
+sudo apt-get install libglfw3 libglfw3-dev
+sudo apt-get install libglm-dev
+
+#disable packages not needed
+cd ze_oss
+touch imp_3rdparty_cuda_toolkit/CATKIN_IGNORE \
+      imp_app_pangolin_example/CATKIN_IGNORE \
+      imp_benchmark_aligned_allocator/CATKIN_IGNORE \
+      imp_bridge_pangolin/CATKIN_IGNORE \
+      imp_cu_core/CATKIN_IGNORE \
+      imp_cu_correspondence/CATKIN_IGNORE \
+      imp_cu_imgproc/CATKIN_IGNORE \
+      imp_ros_rof_denoising/CATKIN_IGNORE \
+      imp_tools_cmd/CATKIN_IGNORE \
+      ze_data_provider/CATKIN_IGNORE \
+      ze_geometry/CATKIN_IGNORE \
+      ze_imu/CATKIN_IGNORE \
+      ze_trajectory_analysis/CATKIN_IGNORE
+cd
+
+#build dvs_renderer: follow https://github.com/uzh-rpg/rpg_dvs_ros/blob/master/README.md
+
+sudo apt-get install ros-kinetic-camera-info-manager
+sudo apt-get install ros-kinetic-image-view
+
+sudo apt-get install software-properties-common
+
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository ppa:lkoppel/opencv
+sudo add-apt-repository ppa:janisozaur/cmake-update
+sudo add-apt-repository ppa:inivation-ppa/inivation-xenial
+sudo apt-get update
+
+sudo apt-get install libcaer-dev
+
+cd
+mkdir -p catkin_ws/src
+cd catkin_ws
+catkin config --init --mkdirs --extend /opt/ros/kinetic --merge-devel --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+
+cd ~/catkin_ws/src
+git clone https://github.com/catkin/catkin_simple.git
+
+
+cd ~/catkin_ws/src
+git clone https://github.com/uzh-rpg/rpg_dvs_ros.git
+
+catkin build davis_ros_driver
+catkin build dvs_renderer
+
+
+#install other stuff
+
+sudo apt install autoconf
+sudo apt install libtool
+sudo apt install ros-kinetic-eigen-conversions
+sudo apt-get install python-rosdep
+sudo apt install ros-kinetic-tf
+sudo apt install ros-kinetic-tf-conversions
+sudo apt-get install libproj-dev
+sudo apt-get install libpcl-dev
+sudo apt-get install libglfw3 libglfw3-dev
+sudo apt-get install libglm-dev
+sudo apt-get install ros-kinetic-pcl-ros
+sudo apt install assimp-utils
+sudo apt install ros-kinetic-assimp-devel
+ln -s /usr/lib/x86_64-linux-gnu/libassimp.so.3 /usr/lib/x86_64-linux-gnu/libassimp.so
+ln -s /usr/include/pcl-1.7/pcl /usr/include/pcl
+
+#build esim
+cd
+cd ~/sim_ws
+catkin init
+catkin config --extend /opt/ros/kinetic --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+cd ~/sim_ws/src
+catkin build esim_ros
