@@ -5,7 +5,7 @@ The aim of this project is to provide a method by which noise can be injected in
 
 The process involves:
 1. Converting noise texture videos to events. 
-This is done using a docker image (https://hub.docker.com/r/pcoll98/video_to_events_1) of a video-to-event conversion software based on ROS kinetic (see Rebecq, H., Gehrig, D., & Scaramuzza, D. (2018). ESIM: an Open Event Camera Simulator. CoRL: Zurich. http://rpg.ifi.uzh.ch/docs/CORL18_Rebecq.pdf). See video_to_event_instructions.txt.
+This is done using a docker image (https://hub.docker.com/r/pcoll98/video_to_events_1) of a video-to-event conversion software based on ROS kinetic (see Rebecq, H., Gehrig, D., & Scaramuzza, D. (2018). ESIM: an Open Event Camera Simulator. CoRL: Zurich. http://rpg.ifi.uzh.ch/docs/CORL18_Rebecq.pdf). See <em>video_to_event_instructions.txt</em>.
 2. Combining noise events with recorded DV events.
 This is specific to the data collection process outlined in https://github.com/jamesturner246/vicon-dvs-projection which takes the 3D coordinates of the object of interest (in this case, a screwdriver) collected by the vicon camera system, and accurately project them onto DV space. This means that a dataset in which events of interest are automatically masked and labelled can be collected. See instructions_for_noise_injection.txt.
 
