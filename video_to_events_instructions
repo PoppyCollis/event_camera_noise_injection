@@ -61,6 +61,7 @@ rosrun esim_ros esim_node \
 #change directory to the path to this script provided (extract_events_from_rosbag.py) in mounted local volume (I originally found the file at https://github.com/uzh-rpg/rpg_e2vid/blob/master/scripts)
 cd ~/path/to/file/
 python extract_events_from_rosbag.py /tmp/out.bag --output_folder=/tmp --event_topic=/cam0/events --no-zip
+# file taken from https://github.com/uzh-rpg/rpg_e2vid/blob/master/scripts/extract_events_from_rosbag.py
 
 #copy txt file to local documents
 cp /tmp/out.txt /path/to/local/workspace
